@@ -7,6 +7,9 @@ COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline -B
 
+# Donne explicitement la permission d'exécution au script sous Linux
+RUN chmod +x mvnw
+
 # Copie du code source et compilation
 COPY src ./src
 RUN ./mvnw clean package -DskipTests
