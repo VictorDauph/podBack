@@ -28,6 +28,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
       TEST: HelloFromDocker
+      DEV: true
     depends_on:
       postgres:
         condition: service_healthy
