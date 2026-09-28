@@ -2,13 +2,15 @@
 FROM eclipse-temurin:23-jdk-alpine AS builder
 WORKDIR /app
 
+# Donne explicitement la permission d'exécution au script sous Linux
+RUN chmod +x mvnw
+
 # Copie des fichiers Maven pour mettre en cache les dépendances
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline -B
 
-# Donne explicitement la permission d'exécution au script sous Linux
-RUN chmod +x mvnw
+
 
 # Copie du code source et compilation
 COPY src ./src
