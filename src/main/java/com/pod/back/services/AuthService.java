@@ -44,7 +44,7 @@ import java.util.UUID;
                         .password(passwordEncoder.encode(request.password()))
                         .enabled(false)
                         .verificationToken(token)
-                        .tokenExpiration(LocalDateTime.now().plusMinutes(2))
+                        .tokenExpiration(LocalDateTime.now().plusMinutes(30))
                         .build();
 
                 userRepository.save(user);
