@@ -29,4 +29,6 @@ public class AuthController {
         authService.confirmAccount(token);
         return ResponseEntity.ok("Votre compte a été activé avec succès.");
     }
+
+    //todo: ajouter la possibilité de renvoyer un token de confirmation
 }
