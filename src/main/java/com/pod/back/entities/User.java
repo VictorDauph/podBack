@@ -27,6 +27,12 @@ public class User {
     private String firstName;
     private String lastName;
 
+    private String verificationToken;
+    private LocalDateTime tokenExpiration;
+
+    @Builder.Default
+    private Boolean enabled=false;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Setter(AccessLevel.NONE)
@@ -39,6 +45,7 @@ public class User {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.role=Role.USER;
+        this.enabled=false;
     }
 
 }
