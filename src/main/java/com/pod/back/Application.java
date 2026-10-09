@@ -17,7 +17,6 @@ public class Application {
 		// 2. Injecte les variables dans les propriétés système de Java
 		dotenv.entries().forEach(entry -> {
 			System.setProperty(entry.getKey(), entry.getValue());
-			System.out.println("Variable chargée depuis .env : " + entry.getKey() + " = " + entry.getValue());
 		});
 
 		// 3. Demarre Spring Boot
