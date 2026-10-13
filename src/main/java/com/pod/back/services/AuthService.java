@@ -29,6 +29,10 @@ public class AuthService {
     @Value("${tokenExpiration}")
     private Integer  tokenExpiration;
 
+    //dev ou prod
+    @Value("${spring.profiles.active}")
+    private String environment;
+
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        EmailService mailSender,
@@ -65,7 +69,9 @@ public class AuthService {
         userRepository.save(user);
 
         // 4. Envoi de l'email
-        mailSender.sendVerificationEmail(user.getEmail(), token);
+
+            mailSender.sendVerificationEmail(user.getEmail(), token);
+
     }
 
     @Transactional
@@ -104,7 +110,11 @@ public class AuthService {
         user.setTokenExpiration(LocalDateTime.now().plusMinutes(tokenExpiration));
 
         // Envoie le nouvel email
-        mailSender.sendVerificationEmail(user.getEmail(), token);
+
+        // 4. Envoi de l'email
+
+            mailSender.sendVerificationEmail(user.getEmail(), token);
+
     }
 
     public AuthResponse login(LoginRequest request) {
