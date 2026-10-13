@@ -29,10 +29,6 @@ public class AuthService {
     @Value("${tokenExpiration}")
     private Integer  tokenExpiration;
 
-    //dev ou prod
-    @Value("${spring.profiles.active}")
-    private String environment;
-
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        EmailService mailSender,
