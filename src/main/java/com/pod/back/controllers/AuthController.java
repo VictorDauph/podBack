@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -21,10 +23,10 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<Map<String,String>> register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Inscription réussie. Veuillez vérifier votre boîte mail pour activer votre compte.");
+                .body(Map.of("message", "Inscription réussie. Vérifiez vos e-mails."));
     }
 
     @PostMapping("/resendConfirmation")
@@ -34,9 +36,9 @@ public class AuthController {
     }
 
     @GetMapping("/confirm")
-    public ResponseEntity<String> confirmAccount(@RequestParam("token") String token) {
+    public ResponseEntity<Map<String,String>> confirmAccount(@RequestParam("token") String token) {
         authService.confirmAccount(token);
-        return ResponseEntity.ok("Votre compte a été activé avec succès.");
+        return ResponseEntity.ok(Map.of("message","compte confirmé"));
     }
 
     @PostMapping("/login")
