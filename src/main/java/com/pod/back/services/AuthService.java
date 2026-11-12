@@ -1,9 +1,9 @@
 package com.pod.back.services;
 
 
-import com.pod.back.dto.AuthResponse;
-import com.pod.back.dto.LoginRequest;
-import com.pod.back.dto.RegisterRequest;
+import com.pod.back.auth.controllers.dto.AuthResponse;
+import com.pod.back.auth.controllers.dto.LoginRequest;
+import com.pod.back.auth.controllers.dto.RegisterRequest;
 import com.pod.back.entities.User;
 import com.pod.back.repositories.UserRepository;
 import com.pod.back.security.JwtService;

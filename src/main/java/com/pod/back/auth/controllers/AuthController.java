@@ -1,9 +1,9 @@
-package com.pod.back.controllers;
+package com.pod.back.auth.controllers;
 
-import com.pod.back.dto.AuthResponse;
-import com.pod.back.dto.LoginRequest;
-import com.pod.back.dto.RegisterRequest;
-import com.pod.back.dto.ResendConfirmationRequest;
+import com.pod.back.auth.controllers.dto.AuthResponse;
+import com.pod.back.auth.controllers.dto.LoginRequest;
+import com.pod.back.auth.controllers.dto.RegisterRequest;
+import com.pod.back.auth.controllers.dto.ResendConfirmationRequest;
 import com.pod.back.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
