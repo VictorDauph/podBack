@@ -1,5 +1,6 @@
 package com.pod.back.exceptions;
 
+import com.pod.back.printful.exception.PrintfulApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -86,6 +87,23 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Conflit d'état");
         problemDetail.setType(URI.create("https://api.ecommerce.com/errors/conflict"));
         problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    // 6b. Erreurs provenant de l'API externe Printful : toujours remontées en 502, qu'elles
+    // soient 4xx ou 5xx côté Printful, pour signaler une panne d'intégration plutôt qu'une
+    // mauvaise requête de notre propre appelant.
+    @ExceptionHandler(PrintfulApiException.class)
+    public ProblemDetail handlePrintfulApiException(PrintfulApiException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_GATEWAY,
+                "Le service d'impression à la demande (Printful) est indisponible ou a rejeté la requête"
+        );
+        problemDetail.setTitle("Erreur Printful");
+        problemDetail.setType(URI.create("https://api.ecommerce.com/errors/printful-error"));
+        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("printfulStatus", ex.getHttpStatus());
+        problemDetail.setProperty("printfulReason", ex.getPrintfulReason());
         return problemDetail;
     }
 

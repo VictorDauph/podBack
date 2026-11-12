@@ -1,4 +1,4 @@
-package com.pod.back.dto;
+package com.pod.back.auth.controllers.dto;
 
 public record RegisterResponse(
         Long id,

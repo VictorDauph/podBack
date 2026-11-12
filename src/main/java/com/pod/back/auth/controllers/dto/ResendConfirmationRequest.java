@@ -1,13 +1,9 @@
-package com.pod.back.dto;
+package com.pod.back.auth.controllers.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record LoginRequest(
+public record ResendConfirmationRequest(
         @NotBlank(message = "L'email est obligatoire")
         @Email(message = "Format d'email invalide")
-        String email,
-
-        @NotBlank(message = "Le mot de passe est obligatoire")
-        String password
-) {}
+        String email){}

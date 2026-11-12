@@ -67,6 +67,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/webhooks/printful/**").permitAll()
+                        .requestMatchers("/api/printful/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
@@ -85,7 +87,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Domaines autorisés (ex: Angular/React local + prod)
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of(frontUrl));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
         configuration.setExposedHeaders(List.of("Authorization"));
