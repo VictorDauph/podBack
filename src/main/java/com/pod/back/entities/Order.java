@@ -44,6 +44,11 @@ public class Order {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    // Id de la commande côté Printful une fois poussée (après passage en PAID). Null jusqu'à
+    // l'appel PrintfulService.createOrder réussi.
+    @Column(name = "printful_order_id")
+    private Long printfulOrderId;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

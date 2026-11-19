@@ -64,6 +64,19 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
+    // 4b. Ressource introuvable (ex : commande/produit inexistant)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleResourceNotFound(ResourceNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage()
+        );
+        problemDetail.setTitle("Ressource introuvable");
+        problemDetail.setType(URI.create("https://api.ecommerce.com/errors/not-found"));
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
     // 4. Arguments invalides / Logique métier (ex: email déjà utilisé, token expiré)
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleIllegalArgument(IllegalArgumentException ex) {

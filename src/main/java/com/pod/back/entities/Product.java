@@ -34,4 +34,9 @@ public class Product {
     // Attribut facultatif pour démarrer simplement
     @Column(nullable = true)
     private String category;
+
+    // Identifiant du variant Printful (sync variant id) correspondant à ce produit. Nullable tant
+    // qu'un produit n'est pas encore relié au catalogue Printful.
+    @Column(name = "printful_variant_id")
+    private Long printfulVariantId;
 }

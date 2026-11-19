@@ -66,9 +66,24 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/webhooks/printful/**").permitAll()
                         .requestMatchers("/api/printful/**").hasRole("ADMIN")
+
+                        // Produits : listing admin + écritures AVANT le GET public en catch-all
+                        .requestMatchers(HttpMethod.GET, "/api/products/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+
+                        // Commandes : action de paiement admin + listing admin AVANT la règle générale
+                        .requestMatchers(HttpMethod.PATCH, "/api/orders/*/pay").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/orders/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/orders/**").authenticated()
+
+                        // Healthcheck Render/Docker : doit rester accessible sans JWT
+                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+
                         .requestMatchers(HttpMethod.GET,
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
