@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/printful")
-public class PrintfulController {
+@RequestMapping("/api/admin/printful")
+public class AdminPrintfulController {
 
     private final PrintfulService printfulService;
 
-    public PrintfulController(PrintfulService printfulService) {
+    public AdminPrintfulController(PrintfulService printfulService) {
         this.printfulService = printfulService;
     }
 

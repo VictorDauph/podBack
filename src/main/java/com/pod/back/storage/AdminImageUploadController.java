@@ -17,12 +17,12 @@ import java.io.UncheckedIOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/images")
-public class ImageUploadController {
+@RequestMapping("/api/admin/images")
+public class AdminImageUploadController {
 
     private final ImageStorageService imageStorageService;
 
-    public ImageUploadController(ImageStorageService imageStorageService) {
+    public AdminImageUploadController(ImageStorageService imageStorageService) {
         this.imageStorageService = imageStorageService;
     }
 

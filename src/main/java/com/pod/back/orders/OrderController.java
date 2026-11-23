@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Actions utilisateur uniquement -- voir AdminOrderController pour la gestion (admin).
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -27,11 +28,6 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.create(user, request));
     }
 
-    @GetMapping("/admin")
-    public ResponseEntity<List<OrderResponse>> listAllForAdmin() {
-        return ResponseEntity.ok(orderService.listAll());
-    }
-
     @GetMapping
     public ResponseEntity<List<OrderResponse>> listOwn(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(orderService.listOwn(user));
@@ -45,10 +41,5 @@ public class OrderController {
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<OrderResponse> cancel(@AuthenticationPrincipal User user, @PathVariable Long id) {
         return ResponseEntity.ok(orderService.cancel(user, id));
-    }
-
-    @PatchMapping("/{id}/pay")
-    public ResponseEntity<OrderResponse> pay(@PathVariable Long id) {
-        return ResponseEntity.ok(orderService.markPaidAndPushToPrintful(id));
     }
 }

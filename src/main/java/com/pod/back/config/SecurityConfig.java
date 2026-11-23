@@ -67,23 +67,21 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/webhooks/printful/**").permitAll()
-                        .requestMatchers("/api/printful/**").hasRole("ADMIN")
 
-                        // Produits : listing admin + écritures AVANT le GET public en catch-all
-                        .requestMatchers(HttpMethod.GET, "/api/products/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                        // Convention : toute route admin vit sous /api/admin/** (AdminProductController,
+                        // AdminOrderController, PrintfulController, ImageUploadController). Une seule
+                        // règle à maintenir, aucun chevauchement avec les routes publiques/utilisateur
+                        // ci-dessous donc pas de risque lié à l'ordre de déclaration.
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // Catalogue public (le GET détail filtre lui-même les produits non
+                        // disponibles au niveau service, voir ProductService.getById)
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
 
-                        // Commandes : action de paiement admin + listing admin AVANT la règle générale
-                        .requestMatchers(HttpMethod.PATCH, "/api/orders/*/pay").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/orders/admin").hasRole("ADMIN")
                         .requestMatchers("/api/orders/**").authenticated()
 
                         // Healthcheck Render/Docker : doit rester accessible sans JWT
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
-                        .requestMatchers("/api/images/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET,
                                 "/v3/api-docs/**",

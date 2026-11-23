@@ -41,6 +41,16 @@ public class ProductService {
     }
 
     public ProductResponse getById(Long id) {
+        Product product = findOrThrow(id);
+        if (!Boolean.TRUE.equals(product.getIsAvailable())) {
+            // 404 (pas juste filtré du listing) pour ne pas révéler l'existence d'un produit
+            // désactivé/brouillon à un appelant public.
+            throw new ResourceNotFoundException("Produit introuvable (id=" + id + ")");
+        }
+        return ProductResponse.from(product);
+    }
+
+    public ProductResponse getByIdForAdmin(Long id) {
         return ProductResponse.from(findOrThrow(id));
     }
 
