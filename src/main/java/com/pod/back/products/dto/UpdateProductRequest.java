@@ -11,8 +11,14 @@ public record UpdateProductRequest(
         String description,
         @NotNull @DecimalMin("0.0") BigDecimal price,
         @NotNull Boolean isAvailable,
-        String imageUrl,
+        String mockupUrl,
         String category,
-        Long printfulVariantId
+        Long printfulVariantId,
+        // Si ces 3 champs changent par rapport au produit existant, mockupUrl est régénéré via
+        // Printful (sinon la valeur envoyée ci-dessus est prise telle quelle).
+        Long printfulCatalogProductId,
+        Long printfulCatalogVariantId,
+        String designImageUrl,
+        String mockupPlacement
 ) {
 }

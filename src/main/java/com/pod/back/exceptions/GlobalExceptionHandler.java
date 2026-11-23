@@ -1,6 +1,7 @@
 package com.pod.back.exceptions;
 
 import com.pod.back.printful.exception.PrintfulApiException;
+import com.pod.back.storage.exception.ImageStorageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.net.URI;
 import java.time.Instant;
@@ -117,6 +119,33 @@ public class GlobalExceptionHandler {
         problemDetail.setProperty("timestamp", Instant.now());
         problemDetail.setProperty("printfulStatus", ex.getHttpStatus());
         problemDetail.setProperty("printfulReason", ex.getPrintfulReason());
+        return problemDetail;
+    }
+
+    // 6c. Échec de stockage/récupération d'image sur R2 (upload direct ou réhébergement d'un
+    // mockup Printful) : même logique que PrintfulApiException, 502 car c'est un service externe.
+    @ExceptionHandler(ImageStorageException.class)
+    public ProblemDetail handleImageStorageException(ImageStorageException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_GATEWAY,
+                "Le stockage d'images est indisponible ou a rejeté la requête"
+        );
+        problemDetail.setTitle("Erreur de stockage image");
+        problemDetail.setType(URI.create("https://api.ecommerce.com/errors/image-storage-error"));
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    // 6d. Fichier envoyé trop volumineux (cf. spring.servlet.multipart.max-file-size)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ProblemDetail handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.PAYLOAD_TOO_LARGE,
+                "Le fichier envoyé dépasse la taille maximale autorisée"
+        );
+        problemDetail.setTitle("Fichier trop volumineux");
+        problemDetail.setType(URI.create("https://api.ecommerce.com/errors/payload-too-large"));
+        problemDetail.setProperty("timestamp", Instant.now());
         return problemDetail;
     }
 

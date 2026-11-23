@@ -83,6 +83,7 @@ public class SecurityConfig {
 
                         // Healthcheck Render/Docker : doit rester accessible sans JWT
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers("/api/images/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET,
                                 "/v3/api-docs/**",

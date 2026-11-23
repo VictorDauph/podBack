@@ -10,9 +10,13 @@ public record ProductResponse(
         String description,
         BigDecimal price,
         Boolean isAvailable,
-        String imageUrl,
+        String mockupUrl,
         String category,
-        Long printfulVariantId
+        Long printfulVariantId,
+        Long printfulCatalogProductId,
+        Long printfulCatalogVariantId,
+        String designImageUrl,
+        String mockupPlacement
 ) {
     public static ProductResponse from(Product product) {
         return new ProductResponse(
@@ -21,9 +25,13 @@ public record ProductResponse(
                 product.getDescription(),
                 product.getPrice(),
                 product.getIsAvailable(),
-                product.getImageUrl(),
+                product.getMockupUrl(),
                 product.getCategory(),
-                product.getPrintfulVariantId()
+                product.getPrintfulVariantId(),
+                product.getPrintfulCatalogProductId(),
+                product.getPrintfulCatalogVariantId(),
+                product.getDesignImageUrl(),
+                product.getMockupPlacement()
         );
     }
 }
